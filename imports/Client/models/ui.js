@@ -1,0 +1,1 @@
+export const changeLocation = "@@ui/changeLocation";
