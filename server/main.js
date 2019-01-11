@@ -1,12 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import http from "http";
-
 import socket from "socket.io";
-
+import { error, info } from "./utils/logger";
 import ClientManager from "./Managers/ClientManager";
 // import ChatroomManager from './Managers/ChatroomManager';
 import makeHandlers from "./handlers";
-
 import getIp from "./utils/ipAddress";
 import {
   joinRequested,
@@ -36,8 +34,8 @@ Meteor.startup(() => {
     client.on(usersRequested, handleGetAvailableUsers);
 
     client.on("error", err => {
-      console.log("received error from client:", client.id);
-      console.log(err);
+      error("received error from client:", client.id);
+      error(err);
     });
 
     client.emit("connection", client.id);
@@ -45,6 +43,6 @@ Meteor.startup(() => {
 
   server.listen(8080, getIp(), err => {
     if (err) throw err;
-    console.log("listening on port 8080");
+    info("listening on port 8080");
   });
 });
