@@ -6,18 +6,21 @@ module.exports = {
         "parser": "babel-eslint",
         "extends": [
           "airbnb",
+          "plugin:prettier/recommended",
+          "prettier/react",
           "plugin:meteor/recommended"
         ],
         "parserOptions": {
           "allowImportExportEverywhere": true
         },
         "plugins": [
-          "meteor"
+          "meteor",
+          "prettier",
         ],
         "settings": {
           "import/resolver": "meteor"
         },
         "rules": {
-          "no-plusplus": false
+          "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
         }
 };

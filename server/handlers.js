@@ -1,41 +1,36 @@
-import {
-  joinRequested,
-  usersRequested,
-  onError,
-} from './common/message-types';
+import { joinRequested, usersRequested, onError } from "./common/message-types";
+import { success } from "./utils/logger";
 
+function logAction(action) {
+  success(JSON.stringify(action));
+}
 
-export default function (client, clientManager) {
-  function handleRegister(userName, callback) {
-    if (!clientManager.isUserAvailable(userName)) { return callback('user is not available'); }
-
-    const user = clientManager.getUserByName(userName);
-    clientManager.registerClient(client, user);
-
-    return callback(null, user);
-  }
-
+export default function(client, clientManager) {
   function handleJoin(actionString, callback) {
     const action = JSON.parse(actionString);
-    console.log(action);
+    logAction(action);
     const { type, payload } = action;
     const { name } = payload;
     clientManager.setClientUser(name, client.id);
     callback({ type, payload: { name, id: client.id } });
-    clientManager.broadcast({ type: usersRequested, payload: clientManager.getAvailableUsers() });
+    clientManager.broadcast({
+      type: usersRequested,
+      payload: clientManager.getAvailableUsers()
+    });
   }
-
 
   function handleGetAvailableUsers(actionString, callback) {
     const action = JSON.parse(actionString);
-    console.log(action);
-    return callback({ type: action.type, payload: clientManager.getAvailableUsers() });
+    logAction(action);
+    return callback({
+      type: action.type,
+      payload: clientManager.getAvailableUsers()
+    });
   }
 
   function handleReconnect(actionString, callback) {
     const action = JSON.parse(actionString);
-    console.log(action);
-
+    logAction(action);
     try {
       const { oldId } = action.payload;
       const newUser = clientManager.handleReconnect(oldId, client);
@@ -48,17 +43,19 @@ export default function (client, clientManager) {
   function handleDisconnect() {
     // remove user profile
     clientManager.removeClient(client).then(() => {
-      clientManager.broadcast({ type: usersRequested, payload: clientManager.getAvailableUsers() });
+      clientManager.broadcast({
+        type: usersRequested,
+        payload: clientManager.getAvailableUsers()
+      });
     });
     // remove member from all chatrooms
     // chatroomManager.removeClient(client)
   }
 
   return {
-    handleRegister,
     handleJoin,
     handleGetAvailableUsers,
     handleDisconnect,
-    handleReconnect,
+    handleReconnect
   };
 }

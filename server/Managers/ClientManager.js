@@ -1,6 +1,6 @@
 // const userTemplates = require('../../config/users')
-
-import { Map } from 'immutable';
+import { Map } from "immutable";
+import { info } from "../utils/logger";
 
 export default class ClientManager {
   constructor() {
@@ -11,10 +11,10 @@ export default class ClientManager {
   // mapping of all connected clients
 
   addClient(client) {
-    this.count++;
+    this.count += 1;
     const payload = { client, count: this.count };
     this.clients = this.clients.set(client.id, payload);
-    console.log('Client Conencted', client.id, this.clients.get(client.id).count);
+    info("Client Conencted", client.id, this.clients.get(client.id).count);
   }
 
   registerClient(client, user) {
@@ -23,10 +23,10 @@ export default class ClientManager {
   }
 
   removeClient(client) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       /* Users might need to reconnect */
       this.disconnectedUsers[client.id] = setTimeout(() => {
-        console.log('client disconnect...', client.id);
+        info("client disconnect...", client.id);
         this.clients = this.clients.delete(client.id);
         resolve();
       }, 10000);
@@ -39,8 +39,7 @@ export default class ClientManager {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-    console.log('handleReconnect', this.clients.get(oldId).user);
-    const {user} = this.clients.get(oldId);
+    const { user } = this.clients.get(oldId);
 
     this.clients = this.clients.delete(oldId);
     this.registerClient(newClient, user);
@@ -49,7 +48,9 @@ export default class ClientManager {
   }
 
   getAvailableUsers() {
-    return Array.from(this.clients.values()).map(c => (c.user ? { name: c.user.name } : null)).filter(c => c);
+    return Array.from(this.clients.values())
+      .map(c => (c.user ? { name: c.user.name } : null))
+      .filter(c => c);
   }
 
   isUserAvailable(userName) {
@@ -57,7 +58,7 @@ export default class ClientManager {
   }
 
   getUserByName(userName) {
-    // return userTemplates.find(u => u.name === userName)
+    return this.clients.find(u => u.name === userName);
   }
 
   getUserByClientId(clientId) {
@@ -70,12 +71,10 @@ export default class ClientManager {
 
       const user = { name };
       this.registerClient(client, user);
-      console.log('Set Client User', this.clients.get(clientId).user);
     }
   }
 
-
   broadcast(action) {
-    this.clients.forEach((({ client }) => client.emit('recieve', action)));
+    this.clients.forEach(({ client }) => client.emit("recieve", action));
   }
 }
