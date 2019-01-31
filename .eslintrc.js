@@ -21,6 +21,10 @@ module.exports = {
           "import/resolver": "meteor"
         },
         "rules": {
-          "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
+          "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+            "import/no-unresolved": [
+               1, 
+               { caseSensitive: false }
+            ]
         }
 };

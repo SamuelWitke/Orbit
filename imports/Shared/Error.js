@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-export default (Error) => {
-  return (
+export default Error => (
     <div>
      {JSON.stringify(Error)}
     </div>
-  )
-}
+  );

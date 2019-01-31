@@ -3,7 +3,6 @@ import http from "http";
 import socket from "socket.io";
 import { error, info } from "./utils/logger";
 import ClientManager from "./Managers/ClientManager";
-// import ChatroomManager from './Managers/ChatroomManager';
 import makeHandlers from "./handlers";
 import getIp from "./utils/ipAddress";
 import {

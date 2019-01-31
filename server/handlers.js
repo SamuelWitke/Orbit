@@ -48,8 +48,6 @@ export default function(client, clientManager) {
         payload: clientManager.getAvailableUsers()
       });
     });
-    // remove member from all chatrooms
-    // chatroomManager.removeClient(client)
   }
 
   return {
