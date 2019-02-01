@@ -8,7 +8,8 @@ import getIp from "./utils/ipAddress";
 import {
   joinRequested,
   usersRequested,
-  onReconnect
+  onReconnect,
+  changeLocation
 } from "./common/message-types";
 
 Meteor.startup(() => {
@@ -21,7 +22,8 @@ Meteor.startup(() => {
     const {
       handleJoin,
       handleGetAvailableUsers,
-      handleReconnect
+      handleReconnect,
+      handleLocationChange
     } = makeHandlers(client, clientManager);
 
     clientManager.addClient(client);
@@ -31,6 +33,8 @@ Meteor.startup(() => {
     client.on(onReconnect, handleReconnect);
 
     client.on(usersRequested, handleGetAvailableUsers);
+
+    client.on(changeLocation, handleLocationChange);
 
     client.on("error", err => {
       error("received error from client:", client.id);

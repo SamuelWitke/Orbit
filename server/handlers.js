@@ -28,6 +28,16 @@ export default function(client, clientManager) {
     });
   }
 
+  function handleLocationChange(actionString) {
+    const action = JSON.parse(actionString);
+    logAction(action);
+    const { type, payload } = action;
+    clientManager.broadcast({
+      type,
+      payload
+    });
+  }
+
   function handleReconnect(actionString, callback) {
     const action = JSON.parse(actionString);
     logAction(action);
@@ -54,6 +64,7 @@ export default function(client, clientManager) {
     handleJoin,
     handleGetAvailableUsers,
     handleDisconnect,
-    handleReconnect
+    handleReconnect,
+    handleLocationChange
   };
 }

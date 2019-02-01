@@ -8,5 +8,6 @@ module.exports = {
   messageAdded: "@@message/messageAdded",
   onLocationChange: "@@ui/changeLocation",
   onReconnect: "@@user/reconnect",
-  onError: "@@user/Error"
+  onError: "@@user/Error",
+  changeLocation: "@@ui/changeLocation"
 };

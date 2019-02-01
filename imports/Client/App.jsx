@@ -32,6 +32,7 @@ class App extends React.Component {
 
   render() {
     const { CurrentUser, notifications } = this.props;
+    console.log(CurrentUser.get("host"));
     return (
       <div className="App-header">
         <div className="masthead">
@@ -45,14 +46,13 @@ class App extends React.Component {
         <div className="main-content">
           {CurrentUser.isEmpty() ? <Join /> : <Message />}
         </div>
-        <Notifications notifications={notifications}>
-          <div className="sidebar">
-            <MessageList />
-          </div>
-          <div className="footer">
-            {CurrentUser.get("host") && <StartButton />}
-          </div>
-        </Notifications>
+        <Notifications notifications={notifications} />
+        <div className="sidebar">
+          <MessageList />
+        </div>
+        <div className="footer">
+          {CurrentUser.get("host") && <StartButton />}
+        </div>
       </div>
     );
   }
