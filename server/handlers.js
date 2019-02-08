@@ -5,7 +5,7 @@ function logAction(action) {
   success(JSON.stringify(action));
 }
 
-export default function(client, clientManager) {
+export default function(client, clientManager, gameManager) {
   function handleJoin(actionString, callback) {
     const action = JSON.parse(actionString);
     logAction(action);
@@ -30,12 +30,12 @@ export default function(client, clientManager) {
 
   function handleLocationChange(actionString) {
     const action = JSON.parse(actionString);
-    logAction(action);
     const { type, payload } = action;
     clientManager.broadcast({
       type,
       payload
     });
+    clientManager.broadcast(gameManager.getRoundInfo());
   }
 
   function handleReconnect(actionString, callback) {

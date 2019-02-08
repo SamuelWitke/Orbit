@@ -11,12 +11,14 @@ import {
   onReconnect,
   changeLocation
 } from "./common/message-types";
+import GameManager from "./Managers/GameManager";
 
 Meteor.startup(() => {
   const server = http.createServer();
   const io = socket(server);
 
   const clientManager = new ClientManager();
+  const gameManager = new GameManager(clientManager);
 
   io.on("connection", client => {
     const {
@@ -24,7 +26,7 @@ Meteor.startup(() => {
       handleGetAvailableUsers,
       handleReconnect,
       handleLocationChange
-    } = makeHandlers(client, clientManager);
+    } = makeHandlers(client, clientManager, gameManager);
 
     clientManager.addClient(client);
 

@@ -2,6 +2,10 @@
 import { Map } from "immutable";
 import { info } from "../utils/logger";
 
+function logAction(action) {
+  info(JSON.stringify(action));
+}
+
 export default class ClientManager {
   constructor() {
     this.clients = Map({});
@@ -75,6 +79,7 @@ export default class ClientManager {
   }
 
   broadcast(action) {
+    logAction(action);
     this.clients.forEach(({ client }) => client.emit("recieve", action));
   }
 }

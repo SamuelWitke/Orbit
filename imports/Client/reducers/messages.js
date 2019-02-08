@@ -1,7 +1,5 @@
-import {fromJS,} from "immutable";
-import {
-    messageAdded,
-} from "../models/message";
+import { fromJS } from "immutable";
+import { messageAdded } from "../models/message";
 
 const handlers = {
   [messageAdded]: ({ state, payload: message, metadata: { createdAt } }) =>
